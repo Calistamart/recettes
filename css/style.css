@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&display=swap');
+
+body {
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    background-color: #FFF7EA;
+}
+
+h1 {
+    color: #E57137;
+    font-size: 55px;
+}
+
+ul > {
+    padding-inline-start: 0px;
+}
+header > nav > ul > li {
+    display: inline;
+    margin-right: 10px;
+    list-style: none;
+}
+
+header > nav > ul > li > a {
+    text-decoration: none;
+}
+
+header > nav > ul > li > a:hover {
+    opacity: 50%;
+    transition: 0.5s;
+}
+
+header > nav > ul > li > a:visited {
+    color: #c0371f;
+}
+
+header > a > img {
+    width: 50px;
+}
+
+#champ-quantite-des-ingredients {
+    width: 50px;
+}
+
+#quantite-ingredients, #liste-des-ingredients {
+    display: inline-block;
+}
