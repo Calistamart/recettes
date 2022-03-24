@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Recetto</title>
+  </head>
+  <body>
+    <header>
+      <h1>Recetto</h1>
+      <a href="#">Nouvelle recette</a>
+      <nav>
+        <ul>
+          <li><a href="#">Mes recettes</a></li>
+          <li><a href="#">Les recettes partagées</a></li>
+          <li><a href="#">Mon compte</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <body>
+
+      <!-- Ajouter plusieurs champs pour les ingredients -->
+      <!-- <form name="recette">
+        <label for="ingredientsForm">Nombre d'ingrédients: (max. 10)</label>
+        <br />
+        <input type="number" id="ingredientsForm" name="ingredients" value="" />
+        <br />
+        <input
+          id="filldetails"
+          name="bouton ingredients"
+          type="button"
+          value="Remplir"
+          onclick="addFields()"
+        />
+        <div id="container" />
+      </form> -->
+
+      <div class="results">
+        <h2>Ma recette</h2>
+        <pre></pre>
+      </div>
+
+      <section class="contact-form">
+        <h2>Ma recette</h2>
+        <p>Saisissez la recette</p>
+        
+        <form action="/new" method="post">
+          <div class="input-group">
+            <label for="nomdelarecette">Nom de la recette</label><br>
+            <input id="nomdelarecette" name="name" type="text"/>
+          </div>
+
+          <div class="input-group" id="listeIngredients">
+            <label for="ingredients">Ingredients</label><br>
+            <input type="text" name="ingredients"><br>
+          </div>
+          
+          <div class="input-group" id="quantiteIngredients">
+            <label for="quantite ingredients">Quantité ingredients (g)</label><br>
+            <input type="number" name="quantiteIngredients"><br>
+          </div>
+
+          <div class="input-group" id="tempsDeCuisson">
+            <label for="tempsDeCuisson">Temps de cuisson (min)</label><br>
+            <input type="number" name="tempsDeCuisson"><br>
+          </div>
+          
+          <div class="input-group">
+            <label for="etapes">Étapes de la recette</label>
+            <textarea id="etapes" name="etapes" rows="6" cols="65"></textarea>
+          </div>
+          <button type="submit" onclick="sendData({test: 'ok'})">Enregistrer</button>
+        </form>
+      </section>
+      
+      <div class="results">
+        <h2>Voici la recette !</h2>
+        <pre></pre>
+      </div>
+    </body>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>
