@@ -11,9 +11,6 @@ h1 {
     font-size: 55px;
 }
 
-ul > {
-    padding-inline-start: 0px;
-}
 header > nav > ul > li {
     display: inline;
     margin-right: 10px;
@@ -33,8 +30,16 @@ header > nav > ul > li > a:visited {
     color: #c0371f;
 }
 
-header > a > img {
-    width: 50px;
+header > button {
+    border-radius: 100%;
+    text-align: center;
+    font-size: 35px;
+    background-color: #ffffff00;
+    padding-left: 12px;
+    padding-right: 12px;
+    color: #E57137;
+    border-color: #E57137;
+    margin-bottom: 15px;
 }
 
 #champ-quantite-des-ingredients {
@@ -43,4 +48,28 @@ header > a > img {
 
 #quantite-ingredients, #liste-des-ingredients {
     display: inline-block;
+}
+
+#addField {
+    color: #E57137;
+    border-color: #E57137;
+    border-radius: 100%;
+    background-color: #ffffff00;
+    font-size: 18px;
+    margin: 5px;
+}
+
+#delete-all-button {
+    border: 0cm;
+    background-color: #ffffff00;
+    font-size: 25px;
+}
+
+#ingr {
+    font-size: 12px;
+    background-color: #f6b88609;
+}
+
+.input-group > p {
+    font-size: 12px;
 }

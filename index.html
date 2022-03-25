@@ -12,16 +12,16 @@
       <h1>Recetto</h1>
       <nav>
         <ul>
-          <li><a href="#">Mes recettes</a></li>
+          <li><a href="#mes-recettes">Mes recettes</a></li>
           <li><a href="#">Recettes partagées</a></li>
           <li><a href="#">Mon compte</a></li>
         </ul>
       </nav>
-      <a href="#"><img src="img/logo-plus.png" alt="Logo +" /></a>
+      <button id="bouton-plus">+</button>
     </header>
 
     <main>
-      <section class="contact-form">
+      <div class="contact-form" id="saisie-de-la-recette" style="display:none;">
         <h2>Ma recette</h2>
         <p>Saisissez la recette</p>
 
@@ -32,75 +32,36 @@
           </div>
           <br />
 
-          <div id="quantite">
-            <div class="input-group" id="quantite-ingredients">
-              <label for="quantite-des-ingredients">Quantité (g) </label><br />
-              <input
-                type="number"
-                name="quantiteIngredients"
-                id="champ-quantite-des-ingredients"
-              />
-            </div>
-
             <div class="input-group" id="liste-des-ingredients">
-              <label for="ingredients"> Ingrédient</label><br />
-              <input
-                type="text"
-                name="ingredients"
-                id="champ-liste-des-ingrédients"
-              />
-              <button type="button" id="addField" >+</button>
+              <label for="ingredients">Ingrédients</label><br />
+              <input type="text" name="ingredients[]" id="champ-liste-des-ingrédients"/>
             </div>
-            <div id="container" />
-          </div>
-
-          <!-- Formulaire pour indiquer le nombre de champs à rajouter avec la fonction addField() -->
-          <!-- <form name="ingredients">
-            <label for="ingredientsForm">Nombre d'ingrédients: (max. 10)</label>
-            <br />
-            <input
-              type="number"
-              id="ingredientsForm"
-              name="ingredients"
-              value=""
-            />
-            <br />
-            <input
-              id="filldetails"
-              name="bouton ingredients"
-              type="button"
-              value="Remplir"
-              onclick="addFields()"
-            />
-          </form> -->
-          <br />
+            <div id="container"></div>
+            <button type="button" id="addField" >+</button> <br> <br>
+            <button type="button" id="ingredientsArrayButton">Voir</button>
+          <p id="ingr"></p>
 
           <div class="input-group" id="tempsDeCuisson">
             <label for="tempsDeCuisson">Temps de cuisson (min)</label><br />
-            <input
-              type="number"
-              name="tempsDeCuisson"
-              id="temps-de-cuisson"
-            /><br /><br>
+            <input type="number" name="tempsDeCuisson" id="temps-de-cuisson"/>
+            <br /><br>
           </div>
 
           <div class="input-group">
             <label for="etapes">Étapes de la recette</label> <br />
-            <textarea
-              id="etapes-de-la-recette"
-              name="etapes"
-              rows="6"
-              cols="30"
-            ></textarea>
+            <p>Séparez les étapes par des points-virgules ;</p>
+            <textarea id="etapes-de-la-recette" name="etapes" rows="6" cols="30"></textarea>
           </div>
-          <button type="submit">Enregistrer</button>
+          <button type="submit" id="save-button">Enregistrer</button>
+          <button type="submit" id="test-button">Test</button>
         </form>
-      </section>
-
-      <div class="results">
-        <h2>Voici la recette !</h2>
-        <pre></pre>
       </div>
+
+      <div class="results" id="mes-recettes">
+        <h2>Voici la recette !</h2>
+        <pre id="livre-de-recettes"></pre>
+      </div> <br>
+      <button type="button" id="delete-all-button">🗑️</button>
     </main>
 
     <script src="js/script.js"></script>
