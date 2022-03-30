@@ -12,96 +12,36 @@ function addField(e) {
 let addFieldBtn = document.querySelector("#addField");
 addFieldBtn.onclick = addField;
 
-// Le best code recupère le formulaire, en fait un objet et l'enregistre avec localStorage
-let allRecipes = [];
-
-function addRecipe(e) {
-  e.preventDefault
-  let recipe = {
-    id: Date.now(),
-    nom: document.getElementById("nom-de-la-recette").value,
-    cookingTime: document.getElementById("temps-de-cuisson").value,
-    steps: separateSteps()
-  }
-  console.log(recipe)
-
-  allRecipes.push(recipe);
-
-  localStorage.setItem('MonLivreDeRecettes', JSON.stringify(allRecipes));
-}
-
-let test = document.querySelector("#test-button");
-test.onclick = addRecipe;
-
-// Affiche un JSON à partir des données du formulaire.
-function handleFormSubmit(event) {
-  event.preventDefault();
-
-  const data = new FormData(this);
-
-  const formJSON = Object.fromEntries(data.entries());
-
-  recettes.push(formJSON);
-
-  results.innerText = "";
-  recettes.forEach((recette) => (results.innerText += JSON.stringify(recette)));
-  localStorage.setItem("recettes", JSON.stringify(recettes));
-}
-
-// Enregistre la recette avec localStorage
-var recettes = JSON.parse(localStorage.getItem("recettes")) || [];
-const results = document.querySelector(".results pre");
-
-results.innerText = "";
-recettes.forEach((recette) => (results.innerText += JSON.stringify(recette)));
-
-let recetteForm = document.querySelector("form#recetteForm");
-recetteForm.onsubmit = handleFormSubmit;
-
 // Faire un array pour les ingrédients
-
-
 function ingredientsListArray() {
   let inputs = document.getElementsByName("ingredients[]");
   let tabIngredients = [];
-  let phraseIngredients = "Les ingrédients sont : ";
 
-  const renderer = document.getElementById("ingr")
-  renderer.innerHTML = ''
-
-  inputs.forEach((input, i)=>{
-    renderer.innerHTML += "ingredient[" + i + "] = " + input.value + " <br> ";
-    tabIngredients.push(input.value)
-  })
-};
-
-let ingredientsArrayButton = document.getElementById("ingredientsArrayButton");
-ingredientsArrayButton.onclick = ingredientsListArray;
+  inputs.forEach((input) => {
+    tabIngredients.push(input.value);
+  });
+  return tabIngredients;
+}
 
 // Bouton + pour afficher la saisie de recette
 function ShowRecipeSaisie() {
   let div = document.getElementById("saisie-de-la-recette");
   if (div.style.display === "none") {
     div.style.display = "block";
-  }
-  else {
+  } else {
     div.style.display = "none";
   }
-};
+}
 
 let showRecipeSaisieButton = document.getElementById("bouton-plus");
 showRecipeSaisieButton.onclick = ShowRecipeSaisie;
 
-// Séparer chaque étape dans un array (par un ;)
+// Séparer chaque étape dans un array (par un retour à la ligne)
 function separateSteps() {
   const recipe = document.getElementById("etapes-de-la-recette").value;
-  const steps = recipe.split(";");
-  console.log(steps);
+  const steps = recipe.split(/\r?\n/);
   return steps;
 }
-
-let separateStepsButton = document.getElementById("save-button");
-separateStepsButton.onclick = separateSteps;
 
 // Bouton pour supprimer toutes les recettes
 let deleteAllButton = document.querySelector("#delete-all-button");
@@ -113,16 +53,67 @@ function deleteButton(event) {
   location.reload();
 }
 
+// Le best code recupère le formulaire, en fait un objet et l'enregistre avec localStorage
+var allRecipes = [];
+
+function addRecipe() {
+  let recipe = {
+    id: Date.now(),
+    nom: document.getElementById("nom-de-la-recette").value,
+    ingredients: ingredientsListArray(),
+    cookingTime: document.getElementById("temps-de-cuisson").value,
+    steps: separateSteps(),
+  };
+  console.log(recipe);
+
+  allRecipes.push(recipe);
+  console.log(allRecipes);
+
+  localStorage.setItem("MonLivreDeRecettes", JSON.stringify(allRecipes));
+}
+
+let saveButton = document.querySelector("#save-button");
+saveButton.onclick = addRecipe;
+
+// Affiche les recettes en dessous joliment
+function DisplayRecipe() {
+  let contentNomDeLaRecette = document.getElementById("resultat-titre-de-la-recette");
+  let contentListeDesIngredients = document.getElementById("resultat-liste-des-ingredients");
+  let contentTempsDeCuisson = document.getElementById("resultat-temps-de-cuisson");
+  let contentEtapesDeLaRecette = document.getElementById("resultat-etapes-de-la-recette");
+  let contentToutesLesRecettes = document.getElementById("resultat-toutes-les-recettes");
 
 
+  const lastRecipe = allRecipes[allRecipes.length - 1];
+  contentNomDeLaRecette.innerHTML = lastRecipe.nom;
+  contentListeDesIngredients.innerHTML = "Ingrédients : " + lastRecipe.ingredients;
+  contentTempsDeCuisson.innerHTML = "Temps de cuisson : " + lastRecipe.cookingTime + " minutes";
+  contentEtapesDeLaRecette.innerHTML = lastRecipe.steps;
+   
+}
+
+let displayRecipeButton = document.querySelector("#display-button");
+displayRecipeButton.onclick = DisplayRecipe;
 
 
-// Faire que le array des ingrédient rentre dans l'objet recette
+// Ajoute les elements sans remplacer les anciens
+function addTemplate(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  var recetteTemplate = document.createElement("div").appendChild("h3").appendChild("p").appendChild("p").appendChild("p");
+  mes-recettes.appendChild(recetteTemplate);
+  mes-recettes.appendChild(document.createElement("br"));
+
+  for (let recipe of allRecipes) {
+    console.log(recipe)
+  }
+}
+
+addTemplate();
+
+// Faire que les recettes précédentes restent sauvegardées et affichées
 // Supprimer qu'une seule recette
 // Modifier les recettes
-
-
-
 
 
 class Recipe {
@@ -136,7 +127,7 @@ class Recipe {
 
 let couscous = new Recipe(
   "Couscous",
-  ["250g de semoule", " 85g de viande", "100g de légumes"],
+  ["250g de semoule", "85g de viande", "100g de légumes"],
   120,
   ["Mettre la semoule", "Mettre la viande", "Mettre les légumes"]
 );

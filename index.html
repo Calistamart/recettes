@@ -32,16 +32,14 @@
           </div>
           <br />
 
-            <div class="input-group" id="liste-des-ingredients">
+            <div class="input-group" id="titre-de-liste-des-ingredients">
               <label for="ingredients">Ingrédients</label><br />
               <input type="text" name="ingredients[]" id="champ-liste-des-ingrédients"/>
             </div>
             <div id="container"></div>
-            <button type="button" id="addField" >+</button> <br> <br>
-            <button type="button" id="ingredientsArrayButton">Voir</button>
-          <p id="ingr"></p>
+            <button type="button" id="addField">+</button> <br> <br>
 
-          <div class="input-group" id="tempsDeCuisson">
+          <div class="input-group" id="titre-de-tempsDeCuisson">
             <label for="tempsDeCuisson">Temps de cuisson (min)</label><br />
             <input type="number" name="tempsDeCuisson" id="temps-de-cuisson"/>
             <br /><br>
@@ -49,11 +47,11 @@
 
           <div class="input-group">
             <label for="etapes">Étapes de la recette</label> <br />
-            <p>Séparez les étapes par des points-virgules ;</p>
-            <textarea id="etapes-de-la-recette" name="etapes" rows="6" cols="30"></textarea>
+            <p>Séparez les étapes par des retours à la ligne</p>
+            <textarea id="etapes-de-la-recette" name="etapes" rows="10" cols="35"></textarea>
           </div>
-          <button type="submit" id="save-button">Enregistrer</button>
-          <button type="submit" id="test-button">Test</button>
+          <button type="button" id="save-button">Enregistrer</button>
+          <button type="button" id="display-button">Voir</button>
         </form>
       </div>
 
@@ -61,6 +59,15 @@
         <h2>Voici la recette !</h2>
         <pre id="livre-de-recettes"></pre>
       </div> <br>
+      <div id="mes-recettes">
+        <div id="ma-recette">
+          <h3 id="resultat-titre-de-la-recette"></h3>
+          <p id="resultat-liste-des-ingredients"></p>
+          <p id="resultat-temps-de-cuisson"></p>
+          <p id="resultat-etapes-de-la-recette"></p>
+          <p id="resultat-toutes-les-recettes"></p>
+        </div>
+      </div>
       <button type="button" id="delete-all-button">🗑️</button>
     </main>
 
