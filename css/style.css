@@ -73,3 +73,30 @@ header > button {
     border-width: 1px;
     border: #c0371f;
 }
+
+.bouton-supprimmer-la-recette {
+    background-color:#ffffff00;
+    border: #ffffff00;
+}
+
+#mes-recettes-enregistrees {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    margin-bottom: 50px;
+}
+
+#menu-deroulant {
+    align-items: end;
+    margin-bottom: 25px;
+
+}
+
+#barre-de-recherche {
+    margin-right:700px;
+    margin-top: 0px;
+}
+
+#menu-recherche {
+    margin-bottom: 50px;
+}

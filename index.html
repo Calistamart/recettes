@@ -12,8 +12,8 @@
       <h1>Recetto</h1>
       <nav>
         <ul>
-          <li><a href="#mes-recettes">Mes recettes</a></li>
-          <li><a href="#">Recettes partagées</a></li>
+          <li><a href="#titre-de-mes-recettes">Mes recettes</a></li>
+          <li><a href="#" id="onglet-mes-recettes">Recettes partagées</a></li>
           <li><a href="#">Mon compte</a></li>
         </ul>
       </nav>
@@ -21,7 +21,7 @@
     </header>
 
     <main>
-      <div class="contact-form" id="saisie-de-la-recette" style="display:none;">
+      <div class="contact-form" id="saisie-de-la-recette" style="display: none">
         <h2>Ma recette</h2>
         <p>Saisissez la recette</p>
 
@@ -32,41 +32,71 @@
           </div>
           <br />
 
-            <div class="input-group" id="titre-de-liste-des-ingredients">
-              <label for="ingredients">Ingrédients</label><br />
-              <input type="text" name="ingredients[]" id="champ-liste-des-ingrédients"/>
-            </div>
-            <div id="container"></div>
-            <button type="button" id="addField">+</button> <br> <br>
+          <div class="input-group" id="titre-de-liste-des-ingredients">
+            <label for="ingredients">Ingrédients</label><br />
+            <input
+              type="text"
+              name="ingredients[]"
+              id="champ-liste-des-ingrédients"
+            />
+          </div>
+          <div id="container"></div>
+          <button type="button" id="addField">+</button> <br />
+          <br />
 
           <div class="input-group" id="titre-de-tempsDeCuisson">
             <label for="tempsDeCuisson">Temps de cuisson (min)</label><br />
-            <input type="number" name="tempsDeCuisson" id="temps-de-cuisson"/>
-            <br /><br>
+            <input
+              type="number"
+              name="tempsDeCuisson"
+              id="temps-de-cuisson"
+              value="0"
+            />
+            <br /><br />
           </div>
 
           <div class="input-group">
             <label for="etapes">Étapes de la recette</label> <br />
             <p>Séparez les étapes par des retours à la ligne</p>
-            <textarea id="etapes-de-la-recette" name="etapes" rows="10" cols="35"></textarea>
+            <textarea
+              id="etapes-de-la-recette"
+              name="etapes"
+              rows="10"
+              cols="35"
+            ></textarea>
           </div>
           <button type="button" id="save-button">Enregistrer</button>
-          <button type="button" id="display-button">Voir</button>
         </form>
       </div>
 
-      <div class="results" id="mes-recettes">
-        <h2>Voici la recette !</h2>
+      <div class="results">
+        <button type="button" id="display-button">Voir</button>
         <pre id="livre-de-recettes"></pre>
-      </div> <br>
+      </div>
+      <br />
       <div id="mes-recettes">
         <div id="ma-recette">
           <h3 id="resultat-titre-de-la-recette"></h3>
           <p id="resultat-liste-des-ingredients"></p>
           <p id="resultat-temps-de-cuisson"></p>
           <p id="resultat-etapes-de-la-recette"></p>
-          <p id="resultat-toutes-les-recettes"></p>
         </div>
+        <h2 id="titre-de-mes-recettes">Mes recettes</h2>
+        <div id="menu-recherche">
+          <input
+            type="text"
+            id="barre-de-recherche"
+            placeholder="Rechercher une recette"
+          />
+          <label for="trier-par" id="label-trier-par">Trier par </label>
+          <select name="trier-par" id="menu-deroulant-trier-par">
+            <option value="ordre-alphabetique">Ordre alphabétique</option>
+            <option value="date-récente">Date (la plus récente)</option>
+            <option value="date-ancienne">Date (la plus ancienne)</option>
+          </select>
+          <button id="button-trier-par">Trier</button>
+        </div>
+        <div id="mes-recettes-enregistrees"></div>
       </div>
       <button type="button" id="delete-all-button">🗑️</button>
     </main>

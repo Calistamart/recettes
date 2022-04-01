@@ -53,10 +53,18 @@ function deleteButton(event) {
   location.reload();
 }
 
-// Le best code recupère le formulaire, en fait un objet et l'enregistre avec localStorage
-var allRecipes = [];
+// Verifie si il y a deja des recettes enregistrees 
+let livreDeRecettesExist = JSON.parse(localStorage.getItem("MonLivreDeRecettes"));
 
-function addRecipe() {
+if (typeof livreDeRecettesExist === "undefined" || livreDeRecettesExist === null) {
+  var allRecipes = [];
+}
+else {
+  var allRecipes = livreDeRecettesExist;
+}
+
+// Recupère le formulaire, en fait un objet et l'enregistre avec localStorage
+function saveRecipe() {
   let recipe = {
     id: Date.now(),
     nom: document.getElementById("nom-de-la-recette").value,
@@ -64,56 +72,150 @@ function addRecipe() {
     cookingTime: document.getElementById("temps-de-cuisson").value,
     steps: separateSteps(),
   };
-  console.log(recipe);
 
   allRecipes.push(recipe);
-  console.log(allRecipes);
+  document.forms[0].reset();
 
   localStorage.setItem("MonLivreDeRecettes", JSON.stringify(allRecipes));
 }
 
 let saveButton = document.querySelector("#save-button");
-saveButton.onclick = addRecipe;
+saveButton.onclick = saveRecipe;
 
 // Affiche les recettes en dessous joliment
 function DisplayRecipe() {
-  let contentNomDeLaRecette = document.getElementById("resultat-titre-de-la-recette");
+  // let contentNomDeLaRecette = document.getElementById("resultat-titre-de-la-recette");
   let contentListeDesIngredients = document.getElementById("resultat-liste-des-ingredients");
-  let contentTempsDeCuisson = document.getElementById("resultat-temps-de-cuisson");
+  // let contentTempsDeCuisson = document.getElementById("resultat-temps-de-cuisson");
   let contentEtapesDeLaRecette = document.getElementById("resultat-etapes-de-la-recette");
-  let contentToutesLesRecettes = document.getElementById("resultat-toutes-les-recettes");
-
 
   const lastRecipe = allRecipes[allRecipes.length - 1];
-  contentNomDeLaRecette.innerHTML = lastRecipe.nom;
+  // contentNomDeLaRecette.innerHTML = lastRecipe.nom;
   contentListeDesIngredients.innerHTML = "Ingrédients : " + lastRecipe.ingredients;
-  contentTempsDeCuisson.innerHTML = "Temps de cuisson : " + lastRecipe.cookingTime + " minutes";
+  // contentTempsDeCuisson.innerHTML = "Temps de cuisson : " + lastRecipe.cookingTime + " minutes";
   contentEtapesDeLaRecette.innerHTML = lastRecipe.steps;
-   
 }
 
 let displayRecipeButton = document.querySelector("#display-button");
 displayRecipeButton.onclick = DisplayRecipe;
 
+// Au lieu que ce soit une fontion, la recette s'affiche directement (impossible pour l'instant vu qu'il faut l'enregistrer pour la voir) onkeyup ?
+const lastRecipe = allRecipes[allRecipes.length - 1];
+const titreDeLaRecette = document.getElementById("nom-de-la-recette");
+const listeDesIngredientsDeLaRecette = document.getElementById("resultat-liste-des-ingredients");
+const tempsDeCuissonDeLaRecette = document.getElementById("temps-de-cuisson");
 
-// Ajoute les elements sans remplacer les anciens
-function addTemplate(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  var recetteTemplate = document.createElement("div").appendChild("h3").appendChild("p").appendChild("p").appendChild("p");
-  mes-recettes.appendChild(recetteTemplate);
-  mes-recettes.appendChild(document.createElement("br"));
+titreDeLaRecette.addEventListener("input", (e) => {
+  const resultTitre = document.getElementById("resultat-titre-de-la-recette");
+  resultTitre.textContent = e.target.value[0];
+});
 
-  for (let recipe of allRecipes) {
-    console.log(recipe)
+tempsDeCuissonDeLaRecette.addEventListener("input", (e) => {
+  const resultTitre = document.getElementById("resultat-temps-de-cuisson");
+  resultTitre.textContent = "Temps de cuisson : " + e.target.value + " minutes" ;
+});
+
+
+// Mettre en forme les recettes enregistrées
+allRecipes.forEach((item) => {
+  let nom = item.nom;
+  let ingredients = item.ingredients;
+  let cookingTime = item.cookingTime;
+  let steps = item.steps;
+  let idRecipe = item.id;
+
+  const container = document.getElementById("mes-recettes-enregistrees");
+  const template = document.createElement("div");
+  template.setAttribute("id", idRecipe);
+  template.setAttribute("class", "recette")
+
+  const recipeContainer = container.appendChild(template);
+
+  const recipeTitleContainer = document.createElement("h3");
+  recipeTitleContainer.setAttribute("id", "resultat-titre-de-la-recette-" + idRecipe);
+
+  const ingredientsContainer = document.createElement("p");
+  ingredientsContainer.setAttribute("id", "resultat-liste-des-ingredients-" + idRecipe);
+
+  const cookingTimeContainer = document.createElement("p");
+  cookingTimeContainer.setAttribute("id", "resultat-temps-de-cuisson-" + idRecipe);
+
+  const stepsContainer = document.createElement("p");
+  stepsContainer.setAttribute("id", "resultat-etapes-de-la-recette-" + idRecipe);
+
+  let title = recipeContainer.appendChild(recipeTitleContainer);
+  title.innerHTML = nom[0].toUpperCase() + nom.slice(1);
+  
+  let ingr = recipeContainer.appendChild(ingredientsContainer);
+  ingr.innerHTML = ingredients;
+
+  let time = recipeContainer.appendChild(cookingTimeContainer);
+  time.innerHTML = "Temps de cuisson : " + cookingTime + " minutes";
+
+  let step = recipeContainer.appendChild(stepsContainer);
+  step.innerHTML = steps;
+
+  const poubelleButton = document.createElement("button");
+  let attributPoubelleButton = "supprimer-la-recette-" + idRecipe;
+  poubelleButton.setAttribute("id", attributPoubelleButton)
+  poubelleButton.setAttribute("class", "bouton-supprimmer-la-recette")
+  poubelleButton.innerText = "🗑️"
+  recipeContainer.appendChild(poubelleButton);
+  poubelleButton.onclick = deleteOneRecipe;
+ });
+
+// (!! NE MARCHE PAS) Supprimer qu'une seule recette
+function deleteOneRecipe(idRecipe) {
+  let elementToDelete = document.getElementById(idRecipe);
+  elementToDelete.parentNode.removeChild(elementToDelete);
+};
+
+// ranger les recettes par ordre alphabétique à partir du menu déroulant
+function RangerParOrdreAlphabetique() {
+  var div = document.querySelector('#mes-recettes-enregistrees'),
+      para = document.querySelectorAll('#mes-recettes-enregistrees div');
+  var paraArr = [].slice.call(para).sort(function (a, b) {
+      return a.textContent > b.textContent ? 1 : -1;
+  });
+  paraArr.forEach(function (p) {
+      div.appendChild(p);
+  });
+}
+
+const buttonTrierPar = document.getElementById("button-trier-par");
+const menuDeroulant = document.getElementById("menu-deroulant-trier-par");
+
+buttonTrierPar.onclick = (event) => {
+  event.preventDefault();
+  RangerParOrdreAlphabetique;
+  location.reload;
+}
+
+// Rechercher une recette
+function Search() {
+  let input = document.getElementById("barre-de-recherche");
+  let filter = input.value.toUpperCase();
+  let mesRecettes = document.getElementById("mes-recettes-enregistrees");
+  let recette = mesRecettes.getElementsByClassName("recette");
+  let title, recherche;
+
+  for (let i = 0; i < recette.length; i++) {
+    title = recette[i].getElementsByTagName("h3")[0];
+    recherche = title.textContent || title.innerText;
+    if (recherche.toUpperCase().indexOf(filter) > -1) {
+      recette[i].style.display = "";
+    }
+    else {
+      recette[i].style.display = "none";
+    }
   }
 }
 
-addTemplate();
+let searchBar = document.querySelector("#barre-de-recherche");
+searchBar.onkeyup = Search;
 
-// Faire que les recettes précédentes restent sauvegardées et affichées
-// Supprimer qu'une seule recette
 // Modifier les recettes
+// Choisir le tri des recettes
 
 
 class Recipe {
@@ -131,5 +233,3 @@ let couscous = new Recipe(
   120,
   ["Mettre la semoule", "Mettre la viande", "Mettre les légumes"]
 );
-
-console.log(couscous);
