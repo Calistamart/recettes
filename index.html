@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/style.css" />
     <title>Recetto</title>
   </head>
+
   <body>
     <header>
       <h1>Recetto</h1>
@@ -17,84 +18,93 @@
           <li><a href="#">Mon compte</a></li>
         </ul>
       </nav>
-      <button id="bouton-plus">+</button>
+      <button id="showForm">+</button>
     </header>
 
     <main>
-      <div class="contact-form" id="saisie-de-la-recette" style="display: none">
+      <form id="recetteForm" method="post" style="display: none">
         <h2>Ma recette</h2>
         <p>Saisissez la recette</p>
+        <div class="input-group">
+          <label for="formTitle">Nom de la recette</label><br />
+          <input id="formTitle" name="nom" type="text" />
+        </div>
+        <br />
 
-        <form id="recetteForm" method="post">
-          <div class="input-group">
-            <label for="nom-de-la-recette">Nom de la recette</label><br />
-            <input id="nom-de-la-recette" name="nom" type="text" />
-          </div>
-          <br />
+        <div class="input-group">
+          <label for="ingredients">Ingrédients</label><br />
+          <input type="text" name="ingredients[]" id="ingredients" />
+        </div>
+        <div id="container"></div>
+        <button type="button" id="addField">+</button> <br />
+        <br />
 
-          <div class="input-group" id="titre-de-liste-des-ingredients">
-            <label for="ingredients">Ingrédients</label><br />
-            <input
-              type="text"
-              name="ingredients[]"
-              id="champ-liste-des-ingrédients"
-            />
-          </div>
-          <div id="container"></div>
-          <button type="button" id="addField">+</button> <br />
-          <br />
+        <div class="input-group" id="titre-de-tempsDeCuisson">
+          <label for="tempsDeCuisson">Temps de cuisson (min)</label><br />
+          <input
+            type="number"
+            name="cookingTime"
+            id="cookingTime"
+            value="0"
+            min="0"
+          />
+          <br /><br />
+        </div>
 
-          <div class="input-group" id="titre-de-tempsDeCuisson">
-            <label for="tempsDeCuisson">Temps de cuisson (min)</label><br />
-            <input
-              type="number"
-              name="tempsDeCuisson"
-              id="temps-de-cuisson"
-              value="0"
-            />
-            <br /><br />
-          </div>
-
-          <div class="input-group">
-            <label for="etapes">Étapes de la recette</label> <br />
-            <p>Séparez les étapes par des retours à la ligne</p>
-            <textarea
-              id="etapes-de-la-recette"
-              name="etapes"
-              rows="10"
-              cols="35"
-            ></textarea>
-          </div>
-          <button type="button" id="save-button">Enregistrer</button>
-        </form>
-      </div>
+        <div class="input-group">
+          <label for="etapes">Étapes de la recette</label> <br />
+          <p>Séparez les étapes par des retours à la ligne</p>
+          <textarea
+            id="etapes-de-la-recette"
+            name="etapes"
+            rows="10"
+            cols="35"
+          ></textarea>
+        </div>
+        <br />
+        <div class="container" id="import-image">
+          <label for="image-input">Importer une image</label><br />
+          <input
+            type="file"
+            id="image-input"
+            accept="image/png"
+            accept="image/jpg"
+          /> <br>
+          <img id="display-image"/>
+        </div>
+        <br />
+        <button type="button" id="save-button">Enregistrer</button>
+      </form>
 
       <div class="results">
-        <button type="button" id="display-button">Voir</button>
         <pre id="livre-de-recettes"></pre>
       </div>
       <br />
       <div id="mes-recettes">
-        <div id="ma-recette">
-          <h3 id="resultat-titre-de-la-recette"></h3>
-          <p id="resultat-liste-des-ingredients"></p>
-          <p id="resultat-temps-de-cuisson"></p>
-          <p id="resultat-etapes-de-la-recette"></p>
-        </div>
         <h2 id="titre-de-mes-recettes">Mes recettes</h2>
         <div id="menu-recherche">
-          <input
-            type="text"
-            id="barre-de-recherche"
-            placeholder="Rechercher une recette"
-          />
-          <label for="trier-par" id="label-trier-par">Trier par </label>
-          <select name="trier-par" id="menu-deroulant-trier-par">
-            <option value="ordre-alphabetique">Ordre alphabétique</option>
-            <option value="date-récente">Date (la plus récente)</option>
-            <option value="date-ancienne">Date (la plus ancienne)</option>
-          </select>
-          <button id="button-trier-par">Trier</button>
+          <div id="div-barre-de-recherche">
+            <label for="barre-de-recherche" id="label-recherche"
+              >Rechercher
+            </label>
+            <input
+              type="text"
+              id="barre-de-recherche"
+              placeholder="une recette"
+            />
+          </div>
+          <div id="div-trier-par">
+            <label for="trier-par" id="label-trier-par">Trier par </label>
+            <select
+              name="trier-par"
+              id="menu-deroulant-trier-par"
+              onChange="sel"
+            >
+              <option value="ordre-alphabetique">ordre alphabétique</option>
+              <option value="date-récente">date (la plus récente)</option>
+              <option value="date-ancienne">date (la plus ancienne)</option>
+            </select>
+          </div>
         </div>
         <div id="mes-recettes-enregistrees"></div>
       </div>

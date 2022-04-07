@@ -89,14 +89,30 @@ header > button {
 #menu-deroulant {
     align-items: end;
     margin-bottom: 25px;
-
 }
 
 #barre-de-recherche {
-    margin-right:700px;
     margin-top: 0px;
 }
 
 #menu-recherche {
     margin-bottom: 50px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
 }
+
+#display-image {
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    height: 115px;
+    border: 0px;
+    background-position: center;
+    background-size: cover;
+ }
+
+ .image-recette {
+    width: 250px;
+    height: 140px;
+ }

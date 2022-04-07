@@ -1,40 +1,130 @@
+var Recetto = function () {
+  this.init();
+  // Verifie si il y a deja des recettes enregistrees
+  let livreDeRecettesExist = JSON.parse(
+    localStorage.getItem("MonLivreDeRecettes")
+  );
+
+  this.recipes = [];
+  if (livreDeRecettesExist) this.recipes = livreDeRecettesExist;
+
+  // Mettre en forme les recettes enregistrées
+  for (const index in this.recipes) {
+    this.showRecipe(this.recipes[index], index)
+  }
+};
+
+Recetto.prototype.init = function () {
+  this.recipesEl = document.getElementById("mes-recettes-enregistrees");
+
+  let addFieldBtn = document.querySelector("#addField");
+  addFieldBtn.onclick = this.addField;
+
+  let showForm = document.getElementById("showForm");
+  showForm.onclick = () => {
+    let div = document.getElementById("recetteForm");
+    div.style.display = div.style.display === "none" ? "block" : "none";
+  };
+
+  // Bouton pour supprimer toutes les recettes
+  const deleteAllButton = document.querySelector("#delete-all-button");
+  deleteAllButton.onclick = deleteButton;
+
+  const saveButton = document.querySelector("#save-button");
+  saveButton.onclick = this.saveRecipe.bind(this);
+
+  const searchBar = document.querySelector("#barre-de-recherche");
+  searchBar.onkeyup = search;
+
+  // Display image
+  const imageInput = document.querySelector("#image-input");
+
+  imageInput.addEventListener("change", (e) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+      const uploadedImage = reader.result;
+      document.querySelector("#display-image").src = uploadedImage;
+    });
+    reader.readAsDataURL(e.target.files[0]);
+  });
+};
+
 // Fonction pour rajouter des champs (pour les ingrédients)
-function addField(e) {
+Recetto.prototype.addField = (e) => {
   e.preventDefault();
   e.stopPropagation();
-  var input = document.createElement("input");
+  const input = document.createElement("input");
   input.type = "text";
   input.name = "ingredients[]";
   container.appendChild(input);
   container.appendChild(document.createElement("br"));
-}
+};
 
-let addFieldBtn = document.querySelector("#addField");
-addFieldBtn.onclick = addField;
+// Afficher les recettes
+Recetto.prototype.showRecipe = function (item, index) {
+  const nom = item.nom;
+  const ingredients = item.ingredients;
+  const cookingTime = item.cookingTime;
+  const steps = item.steps;
+  const idRecipe = item.id;
+  const image = item.image;
 
-// Faire un array pour les ingrédients
-function ingredientsListArray() {
-  let inputs = document.getElementsByName("ingredients[]");
-  let tabIngredients = [];
+  const template = document.createElement("div");
+  template.setAttribute("id", idRecipe);
+  template.setAttribute("class", "recette");
 
-  inputs.forEach((input) => {
-    tabIngredients.push(input.value);
-  });
-  return tabIngredients;
-}
+  const recipeContainer = this.recipesEl.appendChild(template);
 
-// Bouton + pour afficher la saisie de recette
-function ShowRecipeSaisie() {
-  let div = document.getElementById("saisie-de-la-recette");
-  if (div.style.display === "none") {
-    div.style.display = "block";
-  } else {
-    div.style.display = "none";
+  const recipeTitleContainer = document.createElement("h3");
+  recipeTitleContainer.setAttribute("id", `resultat-titre-de-la-recette-${idRecipe}`);
+
+  const ingredientsContainer = document.createElement("p");
+  ingredientsContainer.setAttribute("id", `resultat-liste-des-ingredients-${idRecipe}`);
+
+  const cookingTimeContainer = document.createElement("p");
+  cookingTimeContainer.setAttribute("id", `resultat-temps-de-cuisson-${idRecipe}`);
+
+  const stepsContainer = document.createElement("p");
+  stepsContainer.setAttribute("id", `resultat-etapes-de-la-recette-${idRecipe}`);
+
+  const title = recipeContainer.appendChild(recipeTitleContainer);
+  title.innerHTML = nom[0].toUpperCase() + nom.slice(1);
+
+  if (image) {
+    const imageContainer = document.createElement("img");
+    imageContainer.setAttribute("id", `image-de-la-recette-${idRecipe}`);
+    imageContainer.setAttribute("src", image);
+    imageContainer.setAttribute("class", "image-recette");
+
+    const img = recipeContainer.appendChild(imageContainer);
+    img.innerHTML = image;
   }
-}
 
-let showRecipeSaisieButton = document.getElementById("bouton-plus");
-showRecipeSaisieButton.onclick = ShowRecipeSaisie;
+  const ingr = recipeContainer.appendChild(ingredientsContainer);
+  ingr.innerHTML = ingredients;
+
+  const time = recipeContainer.appendChild(cookingTimeContainer);
+  time.innerHTML = `Temps de cuisson : ${cookingTime} minutes`;
+
+  const step = recipeContainer.appendChild(stepsContainer);
+  step.innerHTML = steps;
+
+  // Supprimer la recette
+  const poubelleButton = document.createElement("button");
+  const attributPoubelleButton = `supprimer-la-recette-${idRecipe}`;
+
+  poubelleButton.setAttribute("id", attributPoubelleButton);
+  poubelleButton.setAttribute("class", "bouton-supprimmer-la-recette");
+  poubelleButton.innerText = "🗑️";
+  recipeContainer.appendChild(poubelleButton);
+
+  poubelleButton.onclick = () => {
+    const elementToDelete = document.getElementById(idRecipe);
+    elementToDelete.parentNode.removeChild(elementToDelete);
+    this.recipes.splice(index, 1);
+    localStorage.setItem("MonLivreDeRecettes", JSON.stringify(this.recipes));
+  };
+};
 
 // Séparer chaque étape dans un array (par un retour à la ligne)
 function separateSteps() {
@@ -44,159 +134,38 @@ function separateSteps() {
 }
 
 // Bouton pour supprimer toutes les recettes
-let deleteAllButton = document.querySelector("#delete-all-button");
-deleteAllButton.onclick = deleteButton;
-
 function deleteButton(event) {
   event.preventDefault();
   localStorage.clear();
   location.reload();
 }
 
-// Verifie si il y a deja des recettes enregistrees 
-let livreDeRecettesExist = JSON.parse(localStorage.getItem("MonLivreDeRecettes"));
-
-if (typeof livreDeRecettesExist === "undefined" || livreDeRecettesExist === null) {
-  var allRecipes = [];
-}
-else {
-  var allRecipes = livreDeRecettesExist;
-}
-
 // Recupère le formulaire, en fait un objet et l'enregistre avec localStorage
-function saveRecipe() {
+Recetto.prototype.saveRecipe = function () {
   let recipe = {
     id: Date.now(),
-    nom: document.getElementById("nom-de-la-recette").value,
+    nom: document.getElementById("formTitle").value,
     ingredients: ingredientsListArray(),
-    cookingTime: document.getElementById("temps-de-cuisson").value,
+    cookingTime: document.getElementById("cookingTime").value,
     steps: separateSteps(),
+    image: document.querySelector("#display-image").src
   };
 
-  allRecipes.push(recipe);
+  console.log(this.recipes);
+  this.showRecipe(recipe, this.recipes.length);
+
+  this.recipes.push(recipe);
   document.forms[0].reset();
 
-  localStorage.setItem("MonLivreDeRecettes", JSON.stringify(allRecipes));
-}
-
-let saveButton = document.querySelector("#save-button");
-saveButton.onclick = saveRecipe;
-
-// Affiche les recettes en dessous joliment
-function DisplayRecipe() {
-  // let contentNomDeLaRecette = document.getElementById("resultat-titre-de-la-recette");
-  let contentListeDesIngredients = document.getElementById("resultat-liste-des-ingredients");
-  // let contentTempsDeCuisson = document.getElementById("resultat-temps-de-cuisson");
-  let contentEtapesDeLaRecette = document.getElementById("resultat-etapes-de-la-recette");
-
-  const lastRecipe = allRecipes[allRecipes.length - 1];
-  // contentNomDeLaRecette.innerHTML = lastRecipe.nom;
-  contentListeDesIngredients.innerHTML = "Ingrédients : " + lastRecipe.ingredients;
-  // contentTempsDeCuisson.innerHTML = "Temps de cuisson : " + lastRecipe.cookingTime + " minutes";
-  contentEtapesDeLaRecette.innerHTML = lastRecipe.steps;
-}
-
-let displayRecipeButton = document.querySelector("#display-button");
-displayRecipeButton.onclick = DisplayRecipe;
-
-// Au lieu que ce soit une fontion, la recette s'affiche directement (impossible pour l'instant vu qu'il faut l'enregistrer pour la voir) onkeyup ?
-const lastRecipe = allRecipes[allRecipes.length - 1];
-const titreDeLaRecette = document.getElementById("nom-de-la-recette");
-const listeDesIngredientsDeLaRecette = document.getElementById("resultat-liste-des-ingredients");
-const tempsDeCuissonDeLaRecette = document.getElementById("temps-de-cuisson");
-
-titreDeLaRecette.addEventListener("input", (e) => {
-  const resultTitre = document.getElementById("resultat-titre-de-la-recette");
-  resultTitre.textContent = e.target.value[0];
-});
-
-tempsDeCuissonDeLaRecette.addEventListener("input", (e) => {
-  const resultTitre = document.getElementById("resultat-temps-de-cuisson");
-  resultTitre.textContent = "Temps de cuisson : " + e.target.value + " minutes" ;
-});
-
-
-// Mettre en forme les recettes enregistrées
-allRecipes.forEach((item) => {
-  let nom = item.nom;
-  let ingredients = item.ingredients;
-  let cookingTime = item.cookingTime;
-  let steps = item.steps;
-  let idRecipe = item.id;
-
-  const container = document.getElementById("mes-recettes-enregistrees");
-  const template = document.createElement("div");
-  template.setAttribute("id", idRecipe);
-  template.setAttribute("class", "recette")
-
-  const recipeContainer = container.appendChild(template);
-
-  const recipeTitleContainer = document.createElement("h3");
-  recipeTitleContainer.setAttribute("id", "resultat-titre-de-la-recette-" + idRecipe);
-
-  const ingredientsContainer = document.createElement("p");
-  ingredientsContainer.setAttribute("id", "resultat-liste-des-ingredients-" + idRecipe);
-
-  const cookingTimeContainer = document.createElement("p");
-  cookingTimeContainer.setAttribute("id", "resultat-temps-de-cuisson-" + idRecipe);
-
-  const stepsContainer = document.createElement("p");
-  stepsContainer.setAttribute("id", "resultat-etapes-de-la-recette-" + idRecipe);
-
-  let title = recipeContainer.appendChild(recipeTitleContainer);
-  title.innerHTML = nom[0].toUpperCase() + nom.slice(1);
-  
-  let ingr = recipeContainer.appendChild(ingredientsContainer);
-  ingr.innerHTML = ingredients;
-
-  let time = recipeContainer.appendChild(cookingTimeContainer);
-  time.innerHTML = "Temps de cuisson : " + cookingTime + " minutes";
-
-  let step = recipeContainer.appendChild(stepsContainer);
-  step.innerHTML = steps;
-
-  const poubelleButton = document.createElement("button");
-  let attributPoubelleButton = "supprimer-la-recette-" + idRecipe;
-  poubelleButton.setAttribute("id", attributPoubelleButton)
-  poubelleButton.setAttribute("class", "bouton-supprimmer-la-recette")
-  poubelleButton.innerText = "🗑️"
-  recipeContainer.appendChild(poubelleButton);
-  poubelleButton.onclick = deleteOneRecipe;
- });
-
-// (!! NE MARCHE PAS) Supprimer qu'une seule recette
-function deleteOneRecipe(idRecipe) {
-  let elementToDelete = document.getElementById(idRecipe);
-  elementToDelete.parentNode.removeChild(elementToDelete);
+  localStorage.setItem("MonLivreDeRecettes", JSON.stringify(this.recipes));
 };
 
-// ranger les recettes par ordre alphabétique à partir du menu déroulant
-function RangerParOrdreAlphabetique() {
-  var div = document.querySelector('#mes-recettes-enregistrees'),
-      para = document.querySelectorAll('#mes-recettes-enregistrees div');
-  var paraArr = [].slice.call(para).sort(function (a, b) {
-      return a.textContent > b.textContent ? 1 : -1;
-  });
-  paraArr.forEach(function (p) {
-      div.appendChild(p);
-  });
-}
-
-const buttonTrierPar = document.getElementById("button-trier-par");
-const menuDeroulant = document.getElementById("menu-deroulant-trier-par");
-
-buttonTrierPar.onclick = (event) => {
-  event.preventDefault();
-  RangerParOrdreAlphabetique;
-  location.reload;
-}
-
 // Rechercher une recette
-function Search() {
-  let input = document.getElementById("barre-de-recherche");
-  let filter = input.value.toUpperCase();
-  let mesRecettes = document.getElementById("mes-recettes-enregistrees");
-  let recette = mesRecettes.getElementsByClassName("recette");
+function search() {
+  const input = document.getElementById("barre-de-recherche");
+  const filter = input.value.toUpperCase();
+  const mesRecettes = document.getElementById("mes-recettes-enregistrees");
+  const recette = mesRecettes.getElementsByClassName("recette");
   let title, recherche;
 
   for (let i = 0; i < recette.length; i++) {
@@ -204,32 +173,21 @@ function Search() {
     recherche = title.textContent || title.innerText;
     if (recherche.toUpperCase().indexOf(filter) > -1) {
       recette[i].style.display = "";
-    }
-    else {
+    } else {
       recette[i].style.display = "none";
     }
   }
 }
 
-let searchBar = document.querySelector("#barre-de-recherche");
-searchBar.onkeyup = Search;
+// Faire un array pour les ingrédients
+function ingredientsListArray() {
+  const inputs = document.getElementsByName("ingredients[]");
+  let tabIngredients = [];
 
-// Modifier les recettes
-// Choisir le tri des recettes
-
-
-class Recipe {
-  constructor(name, ingredients, cookingTime, steps) {
-    this.name = name;
-    this.ingredients = ingredients;
-    this.cookingTime = cookingTime;
-    this.steps = steps;
-  }
+  inputs.forEach((input) => {
+    tabIngredients.push(input.value);
+  });
+  return tabIngredients;
 }
 
-let couscous = new Recipe(
-  "Couscous",
-  ["250g de semoule", "85g de viande", "100g de légumes"],
-  120,
-  ["Mettre la semoule", "Mettre la viande", "Mettre les légumes"]
-);
+let elRecetto = new Recetto();
