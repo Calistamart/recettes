@@ -24,10 +24,9 @@
     <main>
       <form id="recetteForm" method="post" style="display: none">
         <h2>Ma recette</h2>
-        <p>Saisissez la recette</p>
         <div class="input-group">
           <label for="formTitle">Nom de la recette</label><br />
-          <input id="formTitle" name="nom" type="text" />
+          <input id="formTitle" name="nom" type="text"/>
         </div>
         <br />
 
@@ -63,7 +62,7 @@
         </div>
         <br />
         <div class="container" id="import-image">
-          <label for="image-input">Importer une image</label><br />
+          <label for="image-input">Image</label><br />
           <input
             type="file"
             id="image-input"
@@ -73,7 +72,7 @@
           <img id="display-image"/>
         </div>
         <br />
-        <button type="button" id="save-button">Enregistrer</button>
+        <button type="button" id="save-button">💾</button>
       </form>
 
       <div class="results">
@@ -97,11 +96,10 @@
             <label for="trier-par" id="label-trier-par">Trier par </label>
             <select
               name="trier-par"
-              id="menu-deroulant-trier-par"
-              onChange="sel"
-            >
+              id="menu-deroulant-trier-par">
+              <option value="default">...</option>
               <option value="ordre-alphabetique">ordre alphabétique</option>
-              <option value="date-récente">date (la plus récente)</option>
+              <option value="date-recente">date (la plus récente)</option>
               <option value="date-ancienne">date (la plus ancienne)</option>
             </select>
           </div>

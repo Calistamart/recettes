@@ -26,7 +26,7 @@ Recetto.prototype.init = function () {
     div.style.display = div.style.display === "none" ? "block" : "none";
   };
 
-  // Bouton pour supprimer toutes les recettes
+  // Boutons
   const deleteAllButton = document.querySelector("#delete-all-button");
   deleteAllButton.onclick = deleteButton;
 
@@ -47,6 +47,40 @@ Recetto.prototype.init = function () {
     });
     reader.readAsDataURL(e.target.files[0]);
   });
+
+  // Trier par ...
+  const trierPar = document.getElementById("menu-deroulant-trier-par");
+
+  trierPar.addEventListener("change", () => {
+    aCacher = document.querySelectorAll(".recettes");
+    console.log(aCacher)
+    switch (trierPar.value) {
+      case "ordre-alphabetique":
+        let sortedAlpha = this.recipes.sort((x, y) => {return x.nom.localeCompare(y.nom);})
+        console.log(sortedAlpha);
+
+        aCacher.forEach(element => element.style.display="none");
+
+        for (const index in sortedAlpha) {
+          this.showRecipe(sortedAlpha[index], index);
+        }
+      break
+      case "date-recente":
+        let sortedNew = this.recipes.sort((a, b) => {return b.id-a.id});
+        console.log(sortedNew);
+
+        for (const index in sortedNew) {
+          this.showRecipe(sortedNew[index], index);
+        };
+      break
+      case "date-ancienne":
+        for (const index in this.recipes) {
+          this.showRecipe(this.recipes[index], index);
+        };
+      break
+      default:;
+    }
+  })
 };
 
 // Fonction pour rajouter des champs (pour les ingrédients)
@@ -114,16 +148,28 @@ Recetto.prototype.showRecipe = function (item, index) {
   const attributPoubelleButton = `supprimer-la-recette-${idRecipe}`;
 
   poubelleButton.setAttribute("id", attributPoubelleButton);
-  poubelleButton.setAttribute("class", "bouton-supprimmer-la-recette");
+  poubelleButton.setAttribute("class", "bouton-edition");
   poubelleButton.innerText = "🗑️";
   recipeContainer.appendChild(poubelleButton);
 
   poubelleButton.onclick = () => {
-    const elementToDelete = document.getElementById(idRecipe);
-    elementToDelete.parentNode.removeChild(elementToDelete);
-    this.recipes.splice(index, 1);
-    localStorage.setItem("MonLivreDeRecettes", JSON.stringify(this.recipes));
+    if (confirm("Voulez-vous supprimer la recette ?")) {
+      const elementToDelete = document.getElementById(idRecipe);
+      elementToDelete.parentNode.removeChild(elementToDelete);
+      this.recipes.splice(index, 1);
+      localStorage.setItem("MonLivreDeRecettes", JSON.stringify(this.recipes));
+    }
   };
+
+  // Modifier la recette
+  const editButton = document.createElement("button");
+  
+  editButton.setAttribute("id", `modifier-${idRecipe}`);
+  editButton.setAttribute("class", "bouton-edition");
+  editButton.innerText = "✏️";
+  recipeTitleContainer.append(editButton);
+
+
 };
 
 // Séparer chaque étape dans un array (par un retour à la ligne)
@@ -135,9 +181,11 @@ function separateSteps() {
 
 // Bouton pour supprimer toutes les recettes
 function deleteButton(event) {
+  if (confirm("Voulez-vous supprimer toutes les recettes ?")) {
   event.preventDefault();
   localStorage.clear();
   location.reload();
+  }
 }
 
 // Recupère le formulaire, en fait un objet et l'enregistre avec localStorage
@@ -189,5 +237,8 @@ function ingredientsListArray() {
   });
   return tabIngredients;
 }
+
+// cliquer pour agrandir la recette
+// Faire des livres de recettes a la pinterest qu'on peut partager
 
 let elRecetto = new Recetto();

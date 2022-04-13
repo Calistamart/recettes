@@ -74,16 +74,9 @@ header > button {
     border: #c0371f;
 }
 
-.bouton-supprimmer-la-recette {
+.bouton-edition {
     background-color:#ffffff00;
     border: #ffffff00;
-}
-
-#mes-recettes-enregistrees {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 10px;
-    margin-bottom: 50px;
 }
 
 #menu-deroulant {
@@ -105,14 +98,28 @@ header > button {
 #display-image {
     margin-left: auto;
     margin-right: auto;
-    width: 200px;
-    height: 115px;
+    width: 170px;
+    height: 100px;
     border: 0px;
     background-position: center;
     background-size: cover;
- }
+}
 
- .image-recette {
+.image-recette {
     width: 250px;
     height: 140px;
- }
+}
+
+#save-button {
+    background-color:#ffffff00;
+    border: #ffffff00;
+    font-size: 35px;
+}
+
+
+#mes-recettes-enregistrees {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    margin-bottom: 50px;
+}
