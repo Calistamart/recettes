@@ -4,11 +4,26 @@ body {
     text-align: center;
     font-family: "Montserrat", sans-serif;
     background-color: #FFF7EA;
+    color: #a75224;
+    overflow-x: hidden;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
 }
 
 h1 {
-    color: #E57137;
+    color: #d67b42;
     font-size: 55px;
+}
+
+#div-form {
+    background-color: #fff0bd;
+    height: 100%;
+    padding: 10px;
+    border-radius: 20px;
+    margin-right: 20px;
 }
 
 header > nav > ul > li {
@@ -32,13 +47,13 @@ header > nav > ul > li > a:visited {
 
 header > button {
     border-radius: 100%;
-    text-align: center;
+    align-self: left;
     font-size: 35px;
     background-color: #ffffff00;
     padding-left: 12px;
     padding-right: 12px;
-    color: #E57137;
-    border-color: #E57137;
+    color: #d67b42;
+    border-color: #d67b42;
     margin-bottom: 15px;
 }
 
@@ -51,8 +66,8 @@ header > button {
 }
 
 #addField {
-    color: #E57137;
-    border-color: #E57137;
+    color: #d67b42;
+    border-color: #d67b42;
     border-radius: 100%;
     background-color: #ffffff00;
     font-size: 18px;
@@ -123,3 +138,32 @@ header > button {
     grid-gap: 10px;
     margin-bottom: 50px;
 }
+
+#mes-recettes {
+    width: 100%;
+}
+
+button {
+    cursor: pointer;
+}
+
+.recette {
+    background-color: #fffcf1;
+    border-radius: 10px;
+}
+
+@media (max-width: 750px) {
+    main {
+        flex-direction: column;
+    }
+    #mes-recettes-enregistrees {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    #mes-recettes-enregistrees {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+

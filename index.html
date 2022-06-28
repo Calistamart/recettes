@@ -5,6 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/style.css" />
+    <link
+      rel="icon"
+      href="https://cdn-icons-png.flaticon.com/512/2702/2702579.png"
+    />
     <title>Recetto</title>
   </head>
 
@@ -14,7 +18,7 @@
       <nav>
         <ul>
           <li><a href="#titre-de-mes-recettes">Mes recettes</a></li>
-          <li><a href="#" id="onglet-mes-recettes">Recettes partagées</a></li>
+          <!-- <li><a href="#" id="onglet-mes-recettes">Recettes partagées</a></li> -->
           <li><a href="#">Mon compte</a></li>
         </ul>
       </nav>
@@ -22,63 +26,61 @@
     </header>
 
     <main>
-      <form id="recetteForm" method="post" style="display: none">
-        <h2>Ma recette</h2>
-        <div class="input-group">
-          <label for="formTitle">Nom de la recette</label><br />
-          <input id="formTitle" name="nom" type="text"/>
-        </div>
-        <br />
+      <div id="div-form" style="display: none">
+        <form id="recetteForm" method="post">
+          <h2>Ma recette</h2>
+          <div class="input-group">
+            <label for="formTitle">Nom de la recette</label><br />
+            <input id="formTitle" name="nom" type="text" required/>
+          </div>
+          <br />
 
-        <div class="input-group">
-          <label for="ingredients">Ingrédients</label><br />
-          <input type="text" name="ingredients[]" id="ingredients" />
-        </div>
-        <div id="container"></div>
-        <button type="button" id="addField">+</button> <br />
-        <br />
+          <div class="input-group">
+            <label for="ingredients">Ingrédients</label><br />
+            <input type="text" name="ingredients[]" id="ingredients" />
+          </div>
+          <div id="container"></div>
+          <button type="button" id="addField">+</button> <br />
+          <br />
 
-        <div class="input-group" id="titre-de-tempsDeCuisson">
-          <label for="tempsDeCuisson">Temps de cuisson (min)</label><br />
-          <input
-            type="number"
-            name="cookingTime"
-            id="cookingTime"
-            value="0"
-            min="0"
-          />
-          <br /><br />
-        </div>
+          <div class="input-group" id="titre-de-tempsDeCuisson">
+            <label for="cookingTime">Temps de cuisson (min)</label><br />
+            <input
+              type="number"
+              id="cookingTime"
+              value="0"
+              min="0"
+            />
+            <br /><br />
+          </div>
 
-        <div class="input-group">
-          <label for="etapes">Étapes de la recette</label> <br />
-          <p>Séparez les étapes par des retours à la ligne</p>
-          <textarea
-            id="etapes-de-la-recette"
-            name="etapes"
-            rows="10"
-            cols="35"
-          ></textarea>
-        </div>
-        <br />
-        <div class="container" id="import-image">
-          <label for="image-input">Image</label><br />
-          <input
-            type="file"
-            id="image-input"
-            accept="image/png"
-            accept="image/jpg"
-          /> <br>
-          <img id="display-image"/>
-        </div>
-        <br />
-        <button type="button" id="save-button">💾</button>
-      </form>
-
-      <div class="results">
-        <pre id="livre-de-recettes"></pre>
+          <div class="input-group">
+            <label for="etapes-de-la-recette">Étapes de la recette</label> <br />
+            <p>Séparez les étapes par des retours à la ligne</p>
+            <textarea
+              id="etapes-de-la-recette"
+              rows="10"
+              cols="35"
+            ></textarea>
+          </div>
+          <br />
+          <div class="container" id="import-image">
+            <label for="image-input">Image</label><br />
+            <input
+              type="file"
+              id="image-input"
+              accept="image/png, image/jpg, image/jpeg, image/gif"
+            />
+            <br />
+            <img id="display-image" alt="Image du plat"/>
+          </div>
+          <br />
+          <button type="button" id="save-button">💾</button>
+        </form>
       </div>
+
       <br />
+
       <div id="mes-recettes">
         <h2 id="titre-de-mes-recettes">Mes recettes</h2>
         <div id="menu-recherche">
@@ -93,22 +95,19 @@
             />
           </div>
           <div id="div-trier-par">
-            <label for="trier-par" id="label-trier-par">Trier par </label>
-            <select
-              name="trier-par"
-              id="menu-deroulant-trier-par">
-              <option value="default">...</option>
-              <option value="ordre-alphabetique">ordre alphabétique</option>
+            <label for="menu-deroulant-trier-par" id="label-trier-par">Trier par </label>
+            <select id="menu-deroulant-trier-par">
+              <option value="default">date (la plus ancienne)</option>
               <option value="date-recente">date (la plus récente)</option>
-              <option value="date-ancienne">date (la plus ancienne)</option>
+              <option value="ordre-alphabetique">ordre alphabétique</option>
             </select>
           </div>
         </div>
         <div id="mes-recettes-enregistrees"></div>
+        <button type="button" id="delete-all-button">🗑️</button>
       </div>
-      <button type="button" id="delete-all-button">🗑️</button>
     </main>
 
-    <script src="js/script.js"></script>
+    <script type="module" src="js/index.js"></script>
   </body>
 </html>
