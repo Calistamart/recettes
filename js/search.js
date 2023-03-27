@@ -1,8 +1,8 @@
 import { showRecipe } from "./display.js"
 import { read } from "./storage.js"
 
-// Rechercher une recette
 function search() {
+// Rechercher une recette
   const input = document.getElementById("barre-de-recherche");
   const filter = input.value.toUpperCase();
   const mesRecettes = document.getElementById("mes-recettes-enregistrees");
@@ -21,8 +21,8 @@ function search() {
 }
 
 
-// Trier par ...
 function sortBy() {
+// Trier par ...
   let livreDeRecettesExist = read();
 
   let recipes = [];

@@ -2,20 +2,22 @@ import { search, sortBy } from "./search.js";
 import { save, read, reset } from "./storage.js"
 import { ingredientsListArray, separateSteps } from "./tools.js"
 import { showRecipe } from "./display.js"
+import { addField } from "./events/addField.js";
 
 
 class Recetto {
   constructor() {
     this.init();
     // Verifie si il y a déjà des recettes enregistrees
-    let livreDeRecettesExist = read();
+    let livreDeRecettesExist = read()
+    console.log(livreDeRecettesExist)
 
     this.recipes = [];
     if (livreDeRecettesExist)
       this.recipes = livreDeRecettesExist;
 
     // Mettre en forme les recettes enregistrées
-    for (const index in this.recipes) {
+    for (let index in this.recipes) {
       showRecipe(this.recipes[index], index);
     }
   }
@@ -23,7 +25,7 @@ class Recetto {
     this.recipesEl = document.getElementById("mes-recettes-enregistrees");
 
     let addFieldBtn = document.querySelector("#addField");
-    addFieldBtn.onclick = this.addField;
+    addFieldBtn.onclick = addField;
 
     let showForm = document.getElementById("showForm");
     showForm.onclick = () => {
@@ -44,7 +46,6 @@ class Recetto {
     const trierPar = document.getElementById("menu-deroulant-trier-par");
     trierPar.addEventListener("change", sortBy)
 
-
     // Display image
     const imageInput = document.querySelector("#image-input");
 
@@ -56,17 +57,6 @@ class Recetto {
       });
       reader.readAsDataURL(e.target.files[0]);
     });
-  }
-
-  // Fonction pour rajouter des champs (pour les ingrédients)
-  addField(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    const input = document.createElement("input");
-    input.type = "text";
-    input.name = "ingredients[]";
-    container.appendChild(input);
-    container.appendChild(document.createElement("br"));
   }
 
   // Recupère le formulaire, en fait un objet et l'enregistre avec localStorage

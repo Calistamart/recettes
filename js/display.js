@@ -1,3 +1,4 @@
+import { BinButton } from "./events/deleteRecipe.js";
 import { save, read } from "./storage.js"
 
 // Afficher les recettes
@@ -58,25 +59,6 @@ function showRecipe(item, index) {
     const step = recipeContainer.appendChild(stepsContainer);
     step.innerHTML = steps;
 
-    // Supprimer la recette
-    const poubelleButton = document.createElement("button");
-    const attributPoubelleButton = `supprimer-la-recette-${idRecipe}`;
-
-    poubelleButton.setAttribute("id", attributPoubelleButton);
-    poubelleButton.setAttribute("class", "bouton-edition");
-    poubelleButton.innerText = "🗑️";
-    recipeContainer.appendChild(poubelleButton);
-
-    poubelleButton.onclick = () => {
-        const elementToDelete = document.getElementById(idRecipe);
-        const elementToDeleteName = document.getElementById(`resultat-titre-de-la-recette-${idRecipe}`);
-
-        if (confirm(`Voulez-vous supprimer la recette ${elementToDeleteName.textContent} ?`)) {
-            elementToDelete.parentNode.removeChild(elementToDelete);
-            recipes.splice(index, 1);
-            save(recipes);
-        }
-    };
 
     // Modifier la recette
     // const editButton = document.createElement("button");
